@@ -1,0 +1,87 @@
+//this is my c source code. I got the code from Head First C bu the comments are why I created it
+//definetely read my comments. they are very important.
+
+
+
+//how to use structs
+//use typedef to make using the struct easier to call later on
+//structs basically create a new variable type like INT
+//example from the book
+
+#include <stdio.h>
+//the enum below is like a possible spectrum of answers that are allowed. no quotes necessary. or allowed
+//this enum says that there can only be 3 types of unit. Count. Pounds. Pints.
+//the enums name is unit_of_measure
+typedef enum {
+    COUNT, POUNDS, PINTS
+} unit_of_measure;
+
+
+//this union(below this comment) will only allow one type of data, the largest one.
+/*in this case a float  takes 4 and a short takes 2. so when this union is stored it will make room for 4 bytes of data,
+instead of 4 + 4 + 2. or 10 bytes like we would find in a struct*/
+
+typedef union {
+short count;
+float weight;
+float volume;
+}quantity;
+
+//the unions name is  quantity
+
+typedef struct {
+//these next 2 variable are pointers that will never change. They are also chars. Therefore they are called string literals. Hence the const
+const char *name;
+const char *country;
+//amount is a variable with the type quantity, our union that we just made.
+quantity amount;
+//same with units. but this is linked to our enum
+unit_of_measure units;
+}fruit_order;
+//that struct is called fruit_order
+
+//creating a function with the name display. no return type. hence the void
+//the functionn says we are creating a parameter with the name order with the type of fruit_order
+//remember that this is just a function and wont do anything until you call it
+//order is just a parameter not an actual variable and can be replaces with any word. we will see that later in this code
+
+void display(fruit_order order) {
+    printf("This order contains ");
+
+    if(order.units == PINTS) {
+    printf("%2.2f pints of %s\n", order.amount.volume, order.name);
+    }
+
+    else if(order.units == POUNDS) {
+    printf("%2.2f lbs of %s\n", order.amount.weight, order.name);
+    }
+    else {
+    printf("%i %s\n", order.amount.count, order.name);
+    }
+}
+
+
+int main() {
+//in the 3 lines below we are creating 3 variables called apples, strawberries, and oj. they have a data type of fruit_order.
+//since they have a data type of fruit_order we have to surroud the parameters with braces. Then we fill in the parameters
+
+fruit_order apples = {"Apples", "England", .amount.count=144, COUNT};
+fruit_order strawberries = {"strawberries", "Spain", .amount.weight=17.6, POUNDS};
+fruit_order oj = {"Orange Juice", "U.S.A.", .amount.volume=10.5, PINTS};
+
+//before these lines of code nothing has happened. we made a struct, enum, and union, we made a function and we made variables
+//now we have to call the code
+//now apples and the others are replacing the order parameter that we saw in the display function
+// it's pretty straight forward from there.
+
+display(apples);
+display(strawberries);
+display(oj);
+
+return 0;
+}
+
+
+
+
+
